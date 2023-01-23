@@ -6,7 +6,7 @@ import conf
 
 app = Flask(__name__, static_folder="static")
 
-account_id = ""
+master_id = ""
 
 
 @app.route('/')
@@ -16,21 +16,21 @@ def home():
 
 @app.route('/', methods=["POST"])
 def post_id():
-    global account_id
-    account_id = request.form["id"]
+    global master_id
+    master_id = request.form["id"]
 
-    if account_id == "master":
-        account_id = conf.account_id
+    if master_id == "master":
+        master_id = conf.master_id
 
     params = {
         "api_key": conf.api_token
     }
 
-    wl_response = requests.get(f"https://api.opendota.com/api/players/{account_id}/wl", params=params)
+    wl_response = requests.get(f"https://api.opendota.com/api/players/{master_id}/wl", params=params)
     normal_wins = wl_response.json()["win"]
     normal_lose = wl_response.json()["lose"]
 
-    name_response = requests.get(f"https://api.opendota.com/api/players/{account_id}", params=params)
+    name_response = requests.get(f"https://api.opendota.com/api/players/{master_id}", params=params)
     player_name = name_response.json()["profile"]["personaname"]
 
     turbo_params = {
@@ -40,7 +40,7 @@ def post_id():
     }
 
     turbo_wl_response = requests.get(
-        f"https://api.opendota.com/api/players/{account_id}/wl", params=turbo_params)
+        f"https://api.opendota.com/api/players/{master_id}/wl", params=turbo_params)
     turbo_wins = turbo_wl_response.json()["win"]
     turbo_lose = turbo_wl_response.json()["lose"]
 
@@ -60,7 +60,7 @@ def post_id():
     for hero in all_heroes_response.json():
         id_name_heroes_data[str(hero["id"])] = hero["localized_name"]
 
-    response_heroes = requests.get(f"https://api.opendota.com/api/players/{account_id}/heroes", params=params)
+    response_heroes = requests.get(f"https://api.opendota.com/api/players/{master_id}/heroes", params=params)
     best_twenty_heroes = response_heroes.json()[:20]
 
     heroes_stats = {}
@@ -72,7 +72,7 @@ def post_id():
             "Winrate": round(hero["win"] / hero["games"] * 100, 2)
         }
 
-    return render_template("home2.html", id=account_id, user_stats=user_stats, context=heroes_stats)
+    return render_template("home2.html", id=master_id, user_stats=user_stats, context=heroes_stats)
 
 
 @app.route("/account_stats")
@@ -80,19 +80,19 @@ def account_stats():
     import requests
     import conf
 
-    global account_id
-    if account_id == "master":
-        account_id = conf.account_id
+    global master_id
+    if master_id == "master":
+        master_id = conf.master_id
 
     params = {
         "api_key": conf.api_token
     }
 
-    wl_response = requests.get(f"https://api.opendota.com/api/players/{account_id}/wl", params=params)
+    wl_response = requests.get(f"https://api.opendota.com/api/players/{master_id}/wl", params=params)
     normal_wins = wl_response.json()["win"]
     normal_lose = wl_response.json()["lose"]
 
-    name_response = requests.get(f"https://api.opendota.com/api/players/{account_id}", params=params)
+    name_response = requests.get(f"https://api.opendota.com/api/players/{master_id}", params=params)
     player_name = name_response.json()["profile"]["personaname"]
 
     turbo_params = {
@@ -102,7 +102,7 @@ def account_stats():
     }
 
     turbo_wl_response = requests.get(
-        f"https://api.opendota.com/api/players/{account_id}/wl", params=turbo_params)
+        f"https://api.opendota.com/api/players/{master_id}/wl", params=turbo_params)
     turbo_wins = turbo_wl_response.json()["win"]
     turbo_lose = turbo_wl_response.json()["lose"]
 
@@ -126,9 +126,9 @@ def hero_info():
     params = {
         "api_key": conf.api_token
     }
-    global account_id
-    if account_id == "master":
-        account_id = conf.account_id
+    global master_id
+    if master_id == "master":
+        master_id = conf.master_id
 
     all_heroes_response = requests.get("https://api.opendota.com/api/heroes", params=params)
     id_name_heroes_data = {}
@@ -136,7 +136,7 @@ def hero_info():
     for hero in all_heroes_response.json():
         id_name_heroes_data[str(hero["id"])] = hero["localized_name"]
 
-    response_heroes = requests.get(f"https://api.opendota.com/api/players/{account_id}/heroes", params=params)
+    response_heroes = requests.get(f"https://api.opendota.com/api/players/{master_id}/heroes", params=params)
     best_twenty_heroes = response_heroes.json()[:20]
 
     heroes_stats = {}
