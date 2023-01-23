@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Статистика по доте</title>
+</head>
+
+<body>
+Имя игрока: {{context.name}}<br>
+Статистика по номральным матчам:<br>
+Побед:{{context.normal_wins}}<br>
+Поражений:{{context.normal_lose}}<br>
+Процент побед:{{context.normal_wr}}<br>
+Статистика по турбо:<br>
+Побед:{{context.turbo_wins}}<br>
+Поражений:{{context.turbo_lose}}<br>
+Процент побед:{{context.turbo_wr}}<br>
+
+Список лучших героев:<br>
+{% for hero_name, hero_stats in context.items() %}
+    <p>
+        Название героя: {{hero_name}}<br>
+        Побед: {{context[hero_name].Games}}<br>
+        Поражений: {{context[hero_name].Losses}}<br>
+        Процент побед: {{context[hero_name].Winrate}}<br>
+{% endfor %}
+</body>
+
+</html>
