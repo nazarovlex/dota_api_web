@@ -1,11 +1,55 @@
-body {
-    background: #8bbbbb;
-    /*background: no-repeat url("https://thumbnail.imgbin.com/10/2/6/imgbin-dota-2-magician-video-game-humour-others-6bZzqR0LU44K8vsM292QH5AJN_t.jpg");*/
-    margin-top: 50px;
-    margin-left: 100px;
+/* home page */
+.home_body {
+    background-color: #1f2832;
+    background-size: 15%;
+    background-image: url("/static/images/dota2_logo.png");
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: -40%;
+    align-content: center;
 }
 
-#name {
-    margin-top: 50px;
-    margin-left: 100px;
+#home_input {
+    background-color: #2D3848;
+    color: #6C9AAF;
+    outline: 0;
+    outline-offset: 0;
+}
+
+#home_screen_button {
+    background-color: #3A4556;
+}
+
+/* info page */
+.info_body {
+    background: url("/static/images/info_page_background.jpg") no-repeat fixed;
+    font-family: "Times New Roman", Helvetica, sans-serif;
+    min-width: auto;
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+}
+
+#player_info {
+    background: #2D3848;
+    width: 1000px;
+    padding: 15px;
+    margin: 35px auto 10px auto;
+    border: solid 1px #2D3848;
+    color: #6C9AAF;
+}
+
+#round_player_img {
+    border-radius: 100px;
+}
+
+#heroes_info {
+    background: #2D3848;
+    border: solid 1px #2D3848;
+    width: 1000px;
+}
+
+#info_hero_text {
+    text-align: left;
+    color: #6C9AAF;
 }

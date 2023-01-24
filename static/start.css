@@ -1,0 +1,12 @@
+body {
+    background-color: black;
+    background-size: 20%;
+    background-image: url("/static/images/dota-2-logo-556BDCC022-seeklogo.com.png");
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: -40%;
+    align-content: center;
+}
+#button_on_start_screen {
+    background-color: #FF0000;
+}

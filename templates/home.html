@@ -1,32 +1,33 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
+
 <head>
+    <link rel="shortcut icon"
+          href="https://www.seekpng.com/png/detail/18-188405_image-result-for-dota-2-logo-dota-2.png"
+          type="image/x-icon">
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+      integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href='/static/main.css'/>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+            crossorigin="anonymous"></script>
     <title>Статистика по доте</title>
 </head>
 
-<body>
-
-<form action="/account_stats" target="_blank">
-    {% if id == Null %}
-        <button disabled>Статистика аккаунта</button>
-    {% else %}
-        <button>Статистика аккаунта</button>
-    {% endif %}
-
-</form>
-
-<p></p>
-
-<form action="/top_heroes_info" target="_blank">
-    {% if id == Null %}
-        <button disabled>Лучшие герои</button>
-    {% else %}
-        <button>Лучшие герои</button>
-    {% endif %}
+<body class="home_body">
+<form method="POST">
+    <div class="inline-group position-absolute top-50 start-50 translate-middle">
+        <div class="btn-toolbar mb-3">
+            <div class="input group">
+                <input id="home_input" class="form-control" formmethod="post" type="text" name="id"
+                       placeholder="Введите ваш Dota ID">
+            </div>
+        <div class="btn-group me-2">
+                 <button id="home_screen_button" class="btn">ОК</button>
+        </div>
+        </div>
+    </div>
 </form>
 </body>
 
