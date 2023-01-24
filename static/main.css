@@ -14,10 +14,22 @@
     color: #6C9AAF;
     outline: 0;
     outline-offset: 0;
+    border-color: #2D3848;
+}
+
+#home_input:focus, #home_input:active {
+    box-shadow: none !important;
+    border-color: #3A4556;
+    background-color: #2D3848;
+    color: #6C9AAF;
 }
 
 #home_screen_button {
     background-color: #3A4556;
+}
+
+#home_screen_button:focus, #home_screen_button:active {
+    box-shadow: none !important;
 }
 
 /* info page */
