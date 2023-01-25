@@ -61,7 +61,12 @@
     width: 1000px;
 }
 
+.hero_img {
+    width: 256px;
+}
+
 #info_hero_text {
     text-align: left;
     color: #6C9AAF;
 }
+
