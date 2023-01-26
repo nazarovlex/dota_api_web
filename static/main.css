@@ -1,12 +1,13 @@
 /* home page */
 .home_body {
     background-color: #1f2832;
-    background-size: 15%;
-    background-image: url("/static/images/dota2_logo.png");
-    background-repeat: no-repeat;
-    background-position-x: center;
-    background-position-y: -40%;
-    align-content: center;
+}
+
+#dota_img {
+    position: absolute;
+    width: 15%;
+    right: 42.5%;
+    top: 15%;
 }
 
 #home_input {
@@ -15,6 +16,22 @@
     outline: 0;
     outline-offset: 0;
     border-color: #2D3848;
+}
+
+input[type="text"]::-webkit-input-placeholder { /* WebKit browsers */
+   color:    #6C9AAF;
+}
+
+input[type="text"]:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color:    #6C9AAF;
+}
+
+input[type="text"]::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color:    #6C9AAF;
+}
+
+input[type="text"]:-ms-input-placeholder { /* Internet Explorer 10+ */
+   color:    #6C9AAF;
 }
 
 #home_input:focus, #home_input:active {
@@ -26,10 +43,22 @@
 
 #home_screen_button {
     background-color: #3A4556;
+    color: #6C9AAF;
 }
 
 #home_screen_button:focus, #home_screen_button:active {
     box-shadow: none !important;
+}
+
+#toast {
+    position: absolute;
+    left: 85%;
+    background-color: #2D3848;
+    color: #6C9AAF;
+    text-align: center;
+    width: 15%;
+    font-size: 16px;
+
 }
 
 /* info page */
