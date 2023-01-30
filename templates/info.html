@@ -44,18 +44,19 @@
 <div id="heroes_info" class="mb-3">
     <div class="mb-3">
         <div class="container">
-            {% for hero_name, hero_stats in context.items() %}
+            {% for hero_stats in heroes_stats %}
             <br>
             <div class="row justify-content-md-center">
                 <div class="col-4">
-                    <img class="hero_img" src="{{context[hero_name].img}}">
+                    <img src="data:image/jpeg;base64,{{ hero_stats.hero_img_decoded }}">
                 </div>
                 <div class="col-8">
-                    <p id="info_hero_text"> Название героя: <strong>{{hero_name}}</strong><br>
-                        Матчей: {{context[hero_name].Games}}<br>
-                        Побед: {{context[hero_name].Wins}}<br>
-                        Поражений: {{context[hero_name].Losses}}<br>
-                        Процент побед: {{context[hero_name].Winrate}}<br>
+                    <p id="info_hero_text">
+                        Название героя: <strong>{{hero_stats[hero_name]}}</strong><br>
+                        Матчей: {{hero_stats.games}}<br>
+                        Побед: {{hero_stats.wins}}<br>
+                        Поражений: {{hero_stats.losses}}<br>
+                        Процент побед: {{hero_stats.winrate}}<br>
                     </p>
                 </div>
             </div>

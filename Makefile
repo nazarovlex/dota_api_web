@@ -9,3 +9,7 @@ start:
 .PHONY: stop
 stop:
 	docker-compose stop
+
+.PHONY: clean
+clean:
+	sudo rm -rf .artifacts
