@@ -33,7 +33,7 @@ def home():
     return render_template("home.html", id_error=False)
 
 
-@app.route('/', methods=["POST"])
+@app.route('/', methods=["POST", "GET"])
 def post_id():
     account_id = request.form["id"]
 
@@ -50,17 +50,18 @@ def post_id():
     web_collection = current_db["web"]
     profile = web_collection.find_one({"_id": account_id})
 
-    if profile is not None:
-        fs = gridfs.GridFS(current_db, collection="heroes_images")
+    if request.method != "GET":
+        if profile is not None:
+            fs = gridfs.GridFS(current_db, collection="heroes_images")
 
-        # pre save 20 account heroes
-        heroes_stats = []
-        for hero in profile["heroes_stats"]:
-            bimage = fs.get(int(hero["hero_id"])).read()
-            hero["hero_img_decoded"] = base64.b64encode(bimage).decode('utf-8')
-            heroes_stats.append(hero)
+            # pre save 20 account heroes
+            heroes_stats = []
+            for hero in profile["heroes_stats"]:
+                bimage = fs.get(int(hero["hero_id"])).read()
+                hero["hero_img_decoded"] = base64.b64encode(bimage).decode('utf-8')
+                heroes_stats.append(hero)
 
-        return render_template("info.html", id=profile["_id"], user_stats=profile["user_stats"], heroes_stats=heroes_stats)
+            return render_template("info.html", id=profile["_id"], user_stats=profile["user_stats"], heroes_stats=heroes_stats)
 
     # get username & user avatar
     name_response = requests.get(f"https://api.opendota.com/api/players/{account_id}", params=PARAMS)

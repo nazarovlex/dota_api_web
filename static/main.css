@@ -71,6 +71,17 @@ input[type="text"]:-ms-input-placeholder { /* Internet Explorer 10+ */
     padding: 20px;
 }
 
+#timer {
+    position: absolute;
+    /*width: 15%;*/
+    right: 22%;
+    top: 6.5%;
+}
+#refresh_time-select {
+    background-color: #2D3848;
+    color: #6C9AAF;
+}
+
 #player_info {
     background: #2D3848;
     width: 1000px;
