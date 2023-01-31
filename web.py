@@ -18,6 +18,13 @@ TURBO_PARAMS = {
     "game_mode": 23
 }
 
+
+def mongo_init():
+    db_client = pymongo.MongoClient("mongodb://mongo:mongo@mongo:27017/?authMechanism=DEFAULT")
+    current_db = db_client["dota_api"]
+    return current_db
+
+
 app = Flask(__name__, static_folder="static")
 
 
@@ -35,6 +42,25 @@ def post_id():
 
     if not re.search(r'^[0-9]+$', account_id):
         return render_template("home.html", id_error=True)
+
+    # init mongodb
+    current_db = mongo_init()
+
+    # check mongo for existed profile
+    web_collection = current_db["web"]
+    profile = web_collection.find_one({"_id": account_id})
+
+    if profile is not None:
+        fs = gridfs.GridFS(current_db, collection="heroes_images")
+
+        # pre save 20 account heroes
+        heroes_stats = []
+        for hero in profile["heroes_stats"]:
+            bimage = fs.get(int(hero["hero_id"])).read()
+            hero["hero_img_decoded"] = base64.b64encode(bimage).decode('utf-8')
+            heroes_stats.append(hero)
+
+        return render_template("info.html", id=profile["_id"], user_stats=profile["user_stats"], heroes_stats=heroes_stats)
 
     # get username & user avatar
     name_response = requests.get(f"https://api.opendota.com/api/players/{account_id}", params=PARAMS)
@@ -92,8 +118,7 @@ def post_id():
 
     best_twenty_heroes = response_heroes.json()[:20]
 
-    db_client = pymongo.MongoClient("mongodb://mongo:mongo@localhost:27017/?authMechanism=DEFAULT")
-    current_db = db_client["dota_api"]
+
     fs = gridfs.GridFS(current_db, collection="heroes_images")
 
     # pre save 20 account heroes
@@ -112,20 +137,34 @@ def post_id():
         }
         heroes_stats.append(hero_stats)
 
-    # mongo_data = {
-    #     "_id": account_id,
-    #     "user_stats": user_stats,
-    #     "heroes_stats": heroes_stats
-    # }
-    #
+    # remove hero_img_decoded
+    mongo_heroes_stats = []
+    for data in heroes_stats:
+        raw_hero_stats = {}
+        for hero_key, hero_value in data.items():
+            if hero_key != "hero_img_decoded":
+                raw_hero_stats[hero_key] = hero_value
+        mongo_heroes_stats.append(raw_hero_stats)
+
+    # save all user info into mongo
+    db_client = pymongo.MongoClient("mongodb://mongo:mongo@mongo:27017/?authMechanism=DEFAULT")
+    current_db = db_client["dota_api"]
+    web_collection = current_db["web"]
+    mongo_data = {
+        "_id": account_id,
+        "user_stats": user_stats,
+        "heroes_stats": mongo_heroes_stats
+    }
+    web_collection.insert_one(mongo_data)
+
+
+
     # profile_img = requests.get(
     #     url=str(user_stats["avatar"]),
     #     stream=True).content
     #
-    # db_client = pymongo.MongoClient("mongodb://mongo:mongo@localhost:27017/?authMechanism=DEFAULT")
-    # current_db = db_client["dota_api"]
-    # web_collection = current_db["web"]
-    # # ins_result = web_collection.insert_one(mongo_data)
+
+
     # fs = gridfs.GridFS(current_db, collection="profile_images")
     # # a = fs.put(profile_img, filename="profile", _id=account_id)
     #

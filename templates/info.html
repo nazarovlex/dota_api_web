@@ -48,11 +48,11 @@
             <br>
             <div class="row justify-content-md-center">
                 <div class="col-4">
-                    <img src="data:image/jpeg;base64,{{ hero_stats.hero_img_decoded }}">
+                    <img class="hero_img" src="data:image/jpeg;base64,{{ hero_stats.hero_img_decoded }}">
                 </div>
                 <div class="col-8">
                     <p id="info_hero_text">
-                        Название героя: <strong>{{hero_stats[hero_name]}}</strong><br>
+                        Название героя: <strong>{{hero_stats.hero_name}}</strong><br>
                         Матчей: {{hero_stats.games}}<br>
                         Побед: {{hero_stats.wins}}<br>
                         Поражений: {{hero_stats.losses}}<br>
