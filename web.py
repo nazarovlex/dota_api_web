@@ -1,5 +1,5 @@
 import pymongo.collection
-from flask import Flask, render_template
+from flask import Flask, render_template, redirect, url_for
 from flask import request
 import requests
 import conf
@@ -7,6 +7,7 @@ import re
 import pymongo
 import gridfs
 import base64
+import logging
 
 PARAMS = {
     "api_key": conf.api_token
@@ -29,13 +30,14 @@ app = Flask(__name__, static_folder="static")
 
 
 @app.route('/')
+@app.route("/home")
 def home():
     return render_template("home.html", id_error=False)
 
 
-@app.route('/', methods=["POST", "GET"])
-def post_id():
-    account_id = request.form["id"]
+@app.route('/info', methods=["GET"])
+def info():
+    account_id = request.args.get("account_id")
 
     if account_id == "master":
         account_id = conf.master_id
@@ -50,7 +52,7 @@ def post_id():
     web_collection = current_db["web"]
     profile = web_collection.find_one({"_id": account_id})
 
-    if request.method != "GET":
+    if not request.args.get("update_profile"):
         if profile is not None:
             fs = gridfs.GridFS(current_db, collection="heroes_images")
 
@@ -61,7 +63,7 @@ def post_id():
                 hero["hero_img_decoded"] = base64.b64encode(bimage).decode('utf-8')
                 heroes_stats.append(hero)
 
-            return render_template("info.html", id=profile["_id"], user_stats=profile["user_stats"], heroes_stats=heroes_stats)
+            return render_template("info.html", account_id=profile["_id"], user_stats=profile["user_stats"], heroes_stats=heroes_stats)
 
     # get username & user avatar
     name_response = requests.get(f"https://api.opendota.com/api/players/{account_id}", params=PARAMS)
@@ -119,7 +121,6 @@ def post_id():
 
     best_twenty_heroes = response_heroes.json()[:20]
 
-
     fs = gridfs.GridFS(current_db, collection="heroes_images")
 
     # pre save 20 account heroes
@@ -156,25 +157,13 @@ def post_id():
         "user_stats": user_stats,
         "heroes_stats": mongo_heroes_stats
     }
+
+    if request.args.get("update_profile"):
+        web_collection.delete_one({"_id": account_id})
+
     web_collection.insert_one(mongo_data)
 
-
-
-    # profile_img = requests.get(
-    #     url=str(user_stats["avatar"]),
-    #     stream=True).content
-    #
-
-
-    # fs = gridfs.GridFS(current_db, collection="profile_images")
-    # # a = fs.put(profile_img, filename="profile", _id=account_id)
-    #
-    # fs = gridfs.GridFS(current_db, collection="heroes_images")
-    # for hero in best_twenty_heroes:
-    #     bimage = fs.get(int(hero["hero_id"])).read()
-    #     img_encoded = base64.b64encode(bimage)
-
-    return render_template("info.html", id=account_id, user_stats=user_stats, heroes_stats=heroes_stats)
+    return render_template("info.html", account_id=account_id, user_stats=user_stats, heroes_stats=heroes_stats)
 
 
 if __name__ == "__main__":

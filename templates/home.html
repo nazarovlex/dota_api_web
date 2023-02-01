@@ -17,7 +17,7 @@
 </head>
 
 <body class="home_body">
-<form method="POST">
+<form action="{{ url_for('info', account_id=account_id)}}" method="GET">
     {% if id_error %}
     <div class="toast" data-autohide="false" id="toast">
         <div class="toast-body">
@@ -30,11 +30,11 @@
     <div class="inline-group position-absolute top-50 start-50 translate-middle">
         <div class="btn-toolbar mb-3">
             <div class="input group">
-                <input id="home_input" class="form-control" formmethod="post" type="text" name="id"
+                <input id="home_input" class="form-control" formmethod="post" type="text" name="account_id"
                        placeholder="Введите ваш Dota ID" autocomplete="off">
             </div>
             <div class="btn-group me-2">
-                <button id="home_screen_button" class="btn" onclick="timer()">ОК
+                <button id="home_screen_button" class="btn">ОК
                 </button>
             </div>
         </div>

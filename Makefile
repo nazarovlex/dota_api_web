@@ -20,3 +20,4 @@ restart:
 	make build
 	make start
 
+#docker system prune

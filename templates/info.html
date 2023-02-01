@@ -22,18 +22,21 @@
 <body class="info_body">
 
 <div id="timer">
-    <i class='fas fa-sync-alt' onclick=""></i>
-    <label for="refresh_time-select"></label>
-    <select id="refresh_time-select">
-        <option value="manual">Вручную</option>
-        <option value="one">Каждую минуту</option>
-        <option value="five">Каждые 5 минут</option>
-        <option value="ten">Каждые 10 минут</option>
-        <option value="thirty">Каждые 30 минут</option>
-        <option value="hour">Каждый час</option>
-    </select>
+    <form action="{{ url_for('info', account_id=account_id, update_profile=True) }}" method="GET">
+        <input type="hidden" formmethod="get" name="account_id" value="{{ account_id }}">
+        <input type="hidden" formmethod="get" name="update_profile" value="True">
+        <button id="timer_button"><i class='fas fa-sync-alt'></i></button>
+        <label for="refresh_time-select"></label>
+        <select id="refresh_time-select">
+            <option value="manual">Вручную</option>
+            <option value="one">Каждую минуту</option>
+            <option value="five">Каждые 5 минут</option>
+            <option value="ten">Каждые 10 минут</option>
+            <option value="thirty">Каждые 30 минут</option>
+            <option value="hour">Каждый час</option>
+        </select>
+    </form>
 </div>
-
 
 <div id="player_info" class="container">
     <div class="row">
