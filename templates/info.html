@@ -15,6 +15,7 @@
             crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
           integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 
     <title>Статистика по доте</title>
 </head>
@@ -22,18 +23,20 @@
 <body class="info_body">
 
 <div id="timer">
-    <form action="{{ url_for('info', account_id=account_id, update_profile=True) }}" method="GET">
+    <form id="action"
+          action="{{ url_for('info', account_id=account_id, update_profile=update_profile) }}" method="GET">
         <input type="hidden" formmethod="get" name="account_id" value="{{ account_id }}">
         <input type="hidden" formmethod="get" name="update_profile" value="True">
+        <input type="hidden" formmethod="get" name="option">
         <button id="timer_button"><i class='fas fa-sync-alt'></i></button>
         <label for="refresh_time-select"></label>
         <select id="refresh_time-select">
-            <option value="manual">Вручную</option>
-            <option value="one">Каждую минуту</option>
-            <option value="five">Каждые 5 минут</option>
-            <option value="ten">Каждые 10 минут</option>
-            <option value="thirty">Каждые 30 минут</option>
-            <option value="hour">Каждый час</option>
+            <option value="manual">Только вручную</option>
+            <option value="5000">Каждую минуту</option>
+            <option value="300000">Каждые 5 минут</option>
+            <option value="600000">Каждые 10 минут</option>
+            <option value="1800000">Каждые 30 минут</option>
+            <option value="3600000">Каждый час</option>
         </select>
     </form>
 </div>
@@ -88,3 +91,49 @@
 </div>
 </body>
 </html>
+<script>
+
+    let selector = document.getElementById("refresh_time-select");
+     const doc = document.getElementById("action")
+
+
+        $(document).ready(function () {
+            while_loop();
+        });
+
+    async function while_loop() {
+        while ($(document).ready) {
+            await refresh();
+        }
+
+        async function refresh() {
+            if (selector.options[selector.selectedIndex].value === "manual") {
+                await sleep(10000);
+            } else {
+                while (selector.options[selector.selectedIndex].value !== "manual") {
+                    window.location = doc.action;
+                    // document.getElementById("option").value = selector.options[selector.selectedIndex].value;
+                    await sleep(Number(selector.options[selector.selectedIndex].value));
+                }
+            }
+        }
+    }
+
+    const sleep = async (milliseconds) => {
+        await new Promise(resolve => {
+            return setTimeout(resolve, milliseconds)
+        });
+    };
+
+    // let urlString = this.document.documentURI;
+    // let paramString = urlString.split('?')[1];
+    // let queryString = new URLSearchParams(paramString);
+    // // for(pair queryString.entries()) {
+    // //         console.log("Key is:" + pair[0]);
+    // //         console.log("Value is:" + pair[1]);
+    // //     }
+    // console.log(queryString.entries()["option"])
+    // // selector.options[selector.selectedIndex].value
+
+
+</script>

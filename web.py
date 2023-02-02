@@ -1,5 +1,5 @@
 import pymongo.collection
-from flask import Flask, render_template, redirect, url_for
+from flask import Flask, render_template
 from flask import request
 import requests
 import conf
@@ -7,7 +7,7 @@ import re
 import pymongo
 import gridfs
 import base64
-import logging
+
 
 PARAMS = {
     "api_key": conf.api_token
@@ -149,8 +149,6 @@ def info():
         mongo_heroes_stats.append(raw_hero_stats)
 
     # save all user info into mongo
-    db_client = pymongo.MongoClient("mongodb://mongo:mongo@mongo:27017/?authMechanism=DEFAULT")
-    current_db = db_client["dota_api"]
     web_collection = current_db["web"]
     mongo_data = {
         "_id": account_id,
