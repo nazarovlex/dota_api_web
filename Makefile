@@ -20,4 +20,7 @@ restart:
 	make build
 	make start
 
-#docker system prune
+.PHONY: prune
+prune:
+	docker system prune
+

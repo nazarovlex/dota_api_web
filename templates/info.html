@@ -17,6 +17,7 @@
           integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 
+
     <title>Статистика по доте</title>
 </head>
 
@@ -24,15 +25,16 @@
 
 <div id="timer">
     <form id="action"
-          action="{{ url_for('info', account_id=account_id, update_profile=update_profile) }}" method="GET">
-        <input type="hidden" formmethod="get" name="account_id" value="{{ account_id }}">
-        <input type="hidden" formmethod="get" name="update_profile" value="True">
-        <input type="hidden" formmethod="get" name="option">
+          action="{{ url_for('info', account_id=account_id, update_profile=update_profile, option=option) }}"
+          method="GET">
+        <input id="#id" type="hidden" formmethod="get" name="account_id" value="{{ account_id }}">
+        <input id="#update_profile" type="hidden" formmethod="get" name="update_profile" value="True">
+        <input id="#option" type="hidden" formmethod="get" name="option" value="{{ option }}">
         <button id="timer_button"><i class='fas fa-sync-alt'></i></button>
         <label for="refresh_time-select"></label>
         <select id="refresh_time-select">
             <option value="manual">Только вручную</option>
-            <option value="5000">Каждую минуту</option>
+            <option value="60000">Каждую минуту</option>
             <option value="300000">Каждые 5 минут</option>
             <option value="600000">Каждые 10 минут</option>
             <option value="1800000">Каждые 30 минут</option>
@@ -94,12 +96,39 @@
 <script>
 
     let selector = document.getElementById("refresh_time-select");
-     const doc = document.getElementById("action")
+      $(document).ready(function () {
+        while_loop();
+    });
+
+    switch (document.getElementById("#option").value) {
+        case "manual":
+            selector.selectedIndex = 0
+            selector.options[selector.selectedIndex].value = document.getElementById("#option").value
+            break;
+        case "60000":
+            selector.selectedIndex = 1
+            selector.options[selector.selectedIndex].value = document.getElementById("#option").value
+            break;
+        case "300000":
+            selector.selectedIndex = 2
+            selector.options[selector.selectedIndex].value = document.getElementById("#option").value
+            break;
+        case "600000":
+            selector.selectedIndex = 3
+            selector.options[selector.selectedIndex].value = document.getElementById("#option").value
+            break;
+        case "1800000":
+            selector.selectedIndex = 4
+            selector.options[selector.selectedIndex].value = document.getElementById("#option").value
+            break;
+        case "3600000":
+            selector.selectedIndex = 5
+            selector.options[selector.selectedIndex].value = document.getElementById("#option").value
+            break;
+    }
 
 
-        $(document).ready(function () {
-            while_loop();
-        });
+
 
     async function while_loop() {
         while ($(document).ready) {
@@ -107,13 +136,20 @@
         }
 
         async function refresh() {
+            await sleep(10000);
             if (selector.options[selector.selectedIndex].value === "manual") {
+                document.getElementById("#option").value = selector.options[selector.selectedIndex].value;
                 await sleep(10000);
-            } else {
+            }
+            else {
                 while (selector.options[selector.selectedIndex].value !== "manual") {
-                    window.location = doc.action;
-                    // document.getElementById("option").value = selector.options[selector.selectedIndex].value;
-                    await sleep(Number(selector.options[selector.selectedIndex].value));
+                    document.getElementById("#option").value = selector.options[selector.selectedIndex].value;
+
+                    let id = document.getElementById("#id").value;
+                    let update_profile = document.getElementById("#update_profile").value;
+                    let option = document.getElementById("#option").value;
+                    await sleep(selector.options[selector.selectedIndex].value);
+                    window.location = `info?account_id=${id}&update_profile=${update_profile}&option=${option}`;
                 }
             }
         }
@@ -124,16 +160,6 @@
             return setTimeout(resolve, milliseconds)
         });
     };
-
-    // let urlString = this.document.documentURI;
-    // let paramString = urlString.split('?')[1];
-    // let queryString = new URLSearchParams(paramString);
-    // // for(pair queryString.entries()) {
-    // //         console.log("Key is:" + pair[0]);
-    // //         console.log("Value is:" + pair[1]);
-    // //     }
-    // console.log(queryString.entries()["option"])
-    // // selector.options[selector.selectedIndex].value
 
 
 </script>

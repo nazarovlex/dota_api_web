@@ -39,6 +39,12 @@ def home():
 def info():
     account_id = request.args.get("account_id")
 
+    # check user choice option and set default
+    if request.args.get("option") != "manual":
+        option = request.args.get("option")
+    else:
+        option = "manual"
+
     if account_id == "master":
         account_id = conf.master_id
 
@@ -63,7 +69,7 @@ def info():
                 hero["hero_img_decoded"] = base64.b64encode(bimage).decode('utf-8')
                 heroes_stats.append(hero)
 
-            return render_template("info.html", account_id=profile["_id"], user_stats=profile["user_stats"], heroes_stats=heroes_stats)
+            return render_template("info.html", account_id=profile["_id"], user_stats=profile["user_stats"], heroes_stats=heroes_stats, option=option)
 
     # get username & user avatar
     name_response = requests.get(f"https://api.opendota.com/api/players/{account_id}", params=PARAMS)
@@ -161,7 +167,7 @@ def info():
 
     web_collection.insert_one(mongo_data)
 
-    return render_template("info.html", account_id=account_id, user_stats=user_stats, heroes_stats=heroes_stats)
+    return render_template("info.html", account_id=account_id, user_stats=user_stats, heroes_stats=heroes_stats, option=option)
 
 
 if __name__ == "__main__":
