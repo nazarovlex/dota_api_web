@@ -1,8 +1,4 @@
 
-.PHONY: install_requirements
-install_requirements:
-	pip install -r requirements.txt
-
 .PHONY: build
 build:
 	docker-compose build
@@ -18,17 +14,10 @@ stop:
 .PHONY: clean
 clean:
 	sudo rm -rf .artifacts
+	docker system prune
 
 .PHONY: restart
 restart:
 	make clean
 	make build
 	make start
-
-.PHONY: prune
-prune:
-	docker system prune
-
-
-
-

@@ -48,6 +48,7 @@ def info():
     if account_id == "master":
         account_id = conf.master_id
 
+    # validate ID
     if not re.search(r'^[0-9]+$', account_id):
         return render_template("home.html", id_error=True)
 
