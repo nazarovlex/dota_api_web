@@ -1,3 +1,8 @@
+
+.PHONY: install_requirements
+install_requirements:
+	pip install -r requirements.txt
+
 .PHONY: build
 build:
 	docker-compose build
@@ -23,4 +28,7 @@ restart:
 .PHONY: prune
 prune:
 	docker system prune
+
+
+
 

@@ -93,8 +93,8 @@
 </div>
 </body>
 </html>
-<script>
 
+<script>
     let selector = document.getElementById("refresh_time-select");
       $(document).ready(function () {
         while_loop();
@@ -127,19 +127,16 @@
             break;
     }
 
-
-
-
     async function while_loop() {
         while ($(document).ready) {
             await refresh();
         }
 
         async function refresh() {
-            await sleep(10000);
+            await sleep(15000);
             if (selector.options[selector.selectedIndex].value === "manual") {
                 document.getElementById("#option").value = selector.options[selector.selectedIndex].value;
-                await sleep(10000);
+                await sleep(15000);
             }
             else {
                 while (selector.options[selector.selectedIndex].value !== "manual") {
@@ -160,6 +157,4 @@
             return setTimeout(resolve, milliseconds)
         });
     };
-
-
 </script>
